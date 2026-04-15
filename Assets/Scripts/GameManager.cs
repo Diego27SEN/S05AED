@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
         snapshotSystem.MoveForward();
         LoadTurn();
     }
+
     [Button]
     public void PrevTurn()
     {
