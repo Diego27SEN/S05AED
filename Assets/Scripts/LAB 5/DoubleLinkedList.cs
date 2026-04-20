@@ -8,6 +8,7 @@ public class DoubleLinkedList<T> //: MonoBehaviour
     public Node<T> head = null;
     public Node<T> tail = null;
     public int Count;
+    public Node<T> pivot;
 
     //->O(1)
     public virtual void Add(T value)
@@ -19,17 +20,19 @@ public class DoubleLinkedList<T> //: MonoBehaviour
         {
             head = newNode;
             tail = newNode;
+            pivot = newNode; 
         }
         else if(head != null )
         {
             tail.SetNext(newNode);
             newNode.SetPrev(tail);
             tail = newNode;
+            pivot = newNode;
         }
         Count++;
     }
 
-    
+
     //->O(1)
     public virtual void RemoveLast()
     {
@@ -134,5 +137,39 @@ public class DoubleLinkedList<T> //: MonoBehaviour
         }
     }
 
+    public void MoveNext()
+    {
+        if (pivot != null && pivot.Next != null)
+        {
+            pivot = pivot.Next;
+        }
+    }
+
+    public void MovePrev()
+    {
+        if (pivot != null && pivot.Prev != null)
+        {
+            pivot = pivot.Prev;
+        }
+    }
+
+    public void AddWithRewrite(T value)
+    {
+       
+        if (pivot != tail) // Si el pivote no es el último nodo, eliminamos los nodos siguientes al pivote
+        {
+            RemoveFrom(pivot.Next);
+        }
+
+        Node<T> newNode = new(value);
+
+        pivot.SetNext(newNode);
+        newNode.SetPrev(pivot);
+
+        tail = newNode;
+        pivot = newNode;
+
+        Count++;
+    }
 
 }
