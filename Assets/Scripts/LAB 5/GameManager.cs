@@ -42,7 +42,6 @@ public class GameManager : MonoBehaviour
     [Button]
     public void NextTurn()
     {
-        Debug.Log("CLICK NEXT");
         snapshotSystem.MoveForward();
         snapshotSystem.LoadTurn(player);
     }
