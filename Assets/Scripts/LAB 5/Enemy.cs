@@ -2,15 +2,25 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public float speed = 2f;
+    private Transform player;
+
     void Start()
+    {
+        player = GameManager.instance.player.transform;
+    }
+
+    void Update()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public void MoveTowardsPlayer()
     {
-        
+        if (player == null) return;
+
+        Vector3 direction = (player.position - transform.position).normalized;
+
+        transform.position += direction * speed; // sin deltaTime → movimiento por turno
     }
 }

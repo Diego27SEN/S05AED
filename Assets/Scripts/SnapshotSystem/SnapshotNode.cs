@@ -1,9 +1,10 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class SnapshotNode 
 {
     public int Turn;
-
+    public List<Vector3> enemyPositions = new();
     public Vector3 playerPosition;
     public Vector3 playerRotation;
     public int str;

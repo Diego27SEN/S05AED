@@ -10,6 +10,7 @@ public class DoubleLinkedList<T> //: MonoBehaviour
     public int Count;
     public Node<T> pivot;
 
+
     //->O(1)
     public virtual void Add(T value)
     {
@@ -66,42 +67,51 @@ public class DoubleLinkedList<T> //: MonoBehaviour
     //-> O(1)
     public virtual void RemoveFirst()
     {
-
         if (Count <= 1)
         {
             head = null;
             tail = null;
-            Count--;
+            Count = 0;
             return;
         }
 
         Node<T> Evaluator = head.Next;
         head.SetNext(null);
         head = Evaluator;
-        Count--;
-
-
+        head.SetPrev(null); 
     }
 
-    public virtual void RemoveFromPosition(Node<T> position) 
+    public void RemoveFrom(Node<T> node)
     {
-        if (position.Next == tail)
+        if (node == null) return;
+
+
+        if (node.Prev != null) // Si el nodo a eliminar no es el primero, desconectamos el nodo anterior del nodo a eliminar
         {
-            RemoveLast();
-            return;
+            node.Prev.SetNext(null);
         }
-        if(position == head)
+        else
         {
-            RemoveFirst();
-            return;
+            head = null;
         }
-        position.Next.SetPrev(null);
-        position.SetNext(null);
-        tail = position;
+
+        tail = node.Prev;
+
+        Node<T> current = node; // Empezamos a eliminar desde el nodo dado
+
+        while (current != null)
+        {
+            Node<T> next = current.Next;
+
+            current.SetPrev(null);
+            current.SetNext(null);
+
+            current = next;
+        }
 
         ReCount();
-
     }
+
 
     public void ReCount()
     {
@@ -152,11 +162,15 @@ public class DoubleLinkedList<T> //: MonoBehaviour
             pivot = pivot.Prev;
         }
     }
-
     public void AddWithRewrite(T value)
     {
-       
-        if (pivot != tail) // Si el pivote no es el último nodo, eliminamos los nodos siguientes al pivote
+        if (pivot == null)    // Si no hay un nodo pivot, simplemente agregamos el nuevo nodo al final de la lista
+        {
+            Add(value);
+            return;
+        }
+
+        if (pivot != tail)
         {
             RemoveFrom(pivot.Next);
         }
@@ -171,5 +185,28 @@ public class DoubleLinkedList<T> //: MonoBehaviour
 
         Count++;
     }
+
+    public void Remove(Node<T> node)
+    {
+        if (node == null) return;
+
+        if (node.Prev != null)
+            node.Prev.SetNext(node.Next);
+        else
+            head = node.Next;
+
+        if (node.Next != null)
+            node.Next.SetPrev(node.Prev);
+        else
+            tail = node.Prev;
+
+        node.SetNext(null);
+        node.SetPrev(null);
+
+        ReCount();
+    }
+
+   
+
 
 }
